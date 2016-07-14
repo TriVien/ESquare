@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ESquare.Multitenancy;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESquare.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ApplicationController
     {
+        public HomeController(ApplicationContext context) : base(context)
+        {
+        }
+
         public IActionResult Index()
         {
             return View();
