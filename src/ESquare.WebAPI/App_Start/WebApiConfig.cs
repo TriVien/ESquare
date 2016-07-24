@@ -7,6 +7,7 @@ using System.Web.Http.ExceptionHandling;
 using Elmah.Contrib.WebApi;
 using Microsoft.Owin.Security.OAuth;
 using ESquare.WebAPI.ExceptionHandling;
+using ESquare.WebAPI.Infrastructure;
 using Newtonsoft.Json.Serialization;
 
 namespace ESquare.WebAPI
@@ -28,6 +29,9 @@ namespace ESquare.WebAPI
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+            // Configure global filters
+            config.Filters.Add(new MultitenantAuthorizeAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
