@@ -8,7 +8,6 @@ using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using SaasKit.Multitenancy;
 
 namespace ESquare.Infrastructure
 {
@@ -41,20 +40,15 @@ namespace ESquare.Infrastructure
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext<ApplicationDbContext>((i, o) =>
             {
-                object tenantContextTemp;
-                var success = o.Environment.TryGetValue("saaskit:tenantContext", out tenantContextTemp);
+                var tenant = TenantHelper.GetCurrentTenant();
+                if (tenant == null)
+                    return new ApplicationDbContext();
 
-                if (success && tenantContextTemp != null)
-                {
-                    var tenant = ((TenantContext<Tenant>) tenantContextTemp).Tenant;
-                    ApplicationDbContext.ProvisionTenant(tenant.Name, tenant.ConnectionString);
-                    ApplicationDbContext.Migrate(tenant.Name, tenant.ConnectionString);
-                    var context = ApplicationDbContext.Create(tenant.Name, tenant.ConnectionString);
-                    ApplicationDbContext.SeedData(context);
-                    return context;
-                }
-
-                return new ApplicationDbContext();
+                ApplicationDbContext.ProvisionTenant(tenant.Name, tenant.ConnectionString);
+                ApplicationDbContext.Migrate(tenant.Name, tenant.ConnectionString);
+                var dbContext = ApplicationDbContext.Create(tenant.Name, tenant.ConnectionString);
+                ApplicationDbContext.SeedData(dbContext);
+                return dbContext;
             });
 
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);

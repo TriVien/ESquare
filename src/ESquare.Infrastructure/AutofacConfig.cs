@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using ESquare.DAL;
+using ESquare.Infrastructure.Multitenancy;
 using ESquare.Repository;
 
 namespace ESquare.Infrastructure
@@ -24,7 +25,15 @@ namespace ESquare.Infrastructure
 
         private static void RegisterDalDependencies(ContainerBuilder builder)
         {
-            builder.RegisterType<ApplicationDbContext>().As<IDbContext>();
+            builder.Register(context =>
+            {
+                var tenant = TenantHelper.GetCurrentTenant();
+                if (tenant == null)
+                    return new ApplicationDbContext();
+
+                var dbContext = ApplicationDbContext.Create(tenant.Name, tenant.ConnectionString);
+                return dbContext;
+            }).As<IDbContext>();
         }
 
         private static void RegisterRepositoryDependencies(ContainerBuilder builder)
