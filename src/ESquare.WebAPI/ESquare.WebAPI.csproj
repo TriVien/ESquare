@@ -254,7 +254,6 @@
     <Compile Include="Controllers\ClaimsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Infrastructure\HttpHeaderNames.cs" />
     <Compile Include="Infrastructure\MultitenantAuthorizeAttribute.cs" />
     <Compile Include="Models\Account\ClaimBindingModels.cs" />
     <Compile Include="Models\Account\RoleBindingModels.cs" />
