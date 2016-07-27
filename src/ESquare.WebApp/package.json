@@ -1,6 +1,15 @@
 {
   "name": "esquare",
   "version": "1.0.0",
+  "dependencies": {
+    "angular2": "2.0.0-beta.17",
+    "systemjs": "0.19.35",
+    "es6-promise": "3.2.1",
+    "es6-shim": "^0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "^0.6.12"
+  },
   "devDependencies": {
     "gulp": "3.8.11",
     "gulp-concat": "2.5.2",
@@ -9,3 +18,4 @@
     "rimraf": "2.2.8"
   }
 }
+
