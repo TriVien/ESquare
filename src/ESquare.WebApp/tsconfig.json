@@ -5,6 +5,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "noEmitOnError": true,
+    "outDir": "wwwroot/app",
     "removeComments": false,
     "sourceMap": true,
     "target": "es5"
